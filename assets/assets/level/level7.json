@@ -1,0 +1,2474 @@
+{
+  "id": "new_level",
+  "name": "Level Viewer",
+  "description": "",
+  "difficulty": 1,
+  "grid": {
+    "width": 15,
+    "height": 15,
+    "block_size": 40
+  },
+  "board": {
+    "background_color": "#F2E8DC"
+  },
+  "fixed_blocks": [
+    {
+      "x": 1,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "color": "#feffff"
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "color": "#201e21"
+    },
+    {
+      "x": 11,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 0,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "color": "#71ce4a"
+    },
+    {
+      "x": 11,
+      "y": 1,
+      "color": "#231d1a"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "color": "#feffff"
+    },
+    {
+      "x": 13,
+      "y": 1,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "color": "#241d1d"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "color": "#f9fefd"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "color": "#fefefe"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "color": "#f9f9f9"
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "color": "#76ca48"
+    },
+    {
+      "x": 11,
+      "y": 2,
+      "color": "#75ca3f"
+    },
+    {
+      "x": 12,
+      "y": 2,
+      "color": "#231e11"
+    },
+    {
+      "x": 13,
+      "y": 2,
+      "color": "#fdfcff"
+    },
+    {
+      "x": 14,
+      "y": 2,
+      "color": "#fefefe"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "color": "#52cbe3"
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "color": "#ffffff"
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "color": "#231d1a"
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "color": "#56cddd"
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "color": "#231c1c"
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "color": "#78cc4a"
+    },
+    {
+      "x": 11,
+      "y": 3,
+      "color": "#77c852"
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "color": "#6fc94b"
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "color": "#21201c"
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "color": "#55cfe4"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "color": "#55cee6"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "color": "#221d1c"
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "color": "#58cde3"
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "color": "#1f1f1d"
+    },
+    {
+      "x": 12,
+      "y": 4,
+      "color": "#79cd4e"
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "color": "#201f1d"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "color": "#57c7e8"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "color": "#52cde1"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "color": "#58cde2"
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "color": "#75cd3e"
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "color": "#77cc43"
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "color": "#57cce2"
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "color": "#52cbe5"
+    },
+    {
+      "x": 11,
+      "y": 5,
+      "color": "#74cb45"
+    },
+    {
+      "x": 12,
+      "y": 5,
+      "color": "#77ce48"
+    },
+    {
+      "x": 13,
+      "y": 5,
+      "color": "#76ca48"
+    },
+    {
+      "x": 0,
+      "y": 6,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "color": "#51cce1"
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "color": "#59cee4"
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "color": "#58cde2"
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "color": "#54cde5"
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "color": "#75c94a"
+    },
+    {
+      "x": 12,
+      "y": 6,
+      "color": "#77cb4c"
+    },
+    {
+      "x": 13,
+      "y": 6,
+      "color": "#76ca4b"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "color": "#201e21"
+    },
+    {
+      "x": 0,
+      "y": 7,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "color": "#59cee4"
+    },
+    {
+      "x": 2,
+      "y": 7,
+      "color": "#57cce1"
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "color": "#201f19"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "color": "#55cfe3"
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "color": "#53cce6"
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "color": "#52cedf"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "color": "#1f1f21"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "color": "#1e1e1c"
+    },
+    {
+      "x": 4,
+      "y": 8,
+      "color": "#54cde5"
+    },
+    {
+      "x": 5,
+      "y": 8,
+      "color": "#50cde4"
+    },
+    {
+      "x": 6,
+      "y": 8,
+      "color": "#4ecde1"
+    },
+    {
+      "x": 12,
+      "y": 8,
+      "color": "#40cfe3"
+    },
+    {
+      "x": 14,
+      "y": 8,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 9,
+      "color": "#1f1d1e"
+    },
+    {
+      "x": 2,
+      "y": 9,
+      "color": "#57cee0"
+    },
+    {
+      "x": 3,
+      "y": 9,
+      "color": "#5acde2"
+    },
+    {
+      "x": 4,
+      "y": 9,
+      "color": "#55cfe4"
+    },
+    {
+      "x": 5,
+      "y": 9,
+      "color": "#53cce6"
+    },
+    {
+      "x": 9,
+      "y": 9,
+      "color": "#53cfea"
+    },
+    {
+      "x": 11,
+      "y": 9,
+      "color": "#56cfe7"
+    },
+    {
+      "x": 12,
+      "y": 9,
+      "color": "#43cce5"
+    },
+    {
+      "x": 13,
+      "y": 9,
+      "color": "#25211b"
+    },
+    {
+      "x": 14,
+      "y": 9,
+      "color": "#fefefe"
+    },
+    {
+      "x": 0,
+      "y": 10,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 10,
+      "color": "#202020"
+    },
+    {
+      "x": 2,
+      "y": 10,
+      "color": "#52d0e3"
+    },
+    {
+      "x": 4,
+      "y": 10,
+      "color": "#57cce1"
+    },
+    {
+      "x": 6,
+      "y": 10,
+      "color": "#58cde2"
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "color": "#52cde1"
+    },
+    {
+      "x": 10,
+      "y": 10,
+      "color": "#57cce4"
+    },
+    {
+      "x": 11,
+      "y": 10,
+      "color": "#54cae0"
+    },
+    {
+      "x": 12,
+      "y": 10,
+      "color": "#201e1f"
+    },
+    {
+      "x": 13,
+      "y": 10,
+      "color": "#fffeff"
+    },
+    {
+      "x": 14,
+      "y": 10,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 11,
+      "color": "#21201c"
+    },
+    {
+      "x": 4,
+      "y": 11,
+      "color": "#1f1f1d"
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "color": "#241d21"
+    },
+    {
+      "x": 6,
+      "y": 11,
+      "color": "#1e1e1c"
+    },
+    {
+      "x": 7,
+      "y": 11,
+      "color": "#231e1d"
+    },
+    {
+      "x": 8,
+      "y": 11,
+      "color": "#1d2119"
+    },
+    {
+      "x": 9,
+      "y": 11,
+      "color": "#5acce5"
+    },
+    {
+      "x": 10,
+      "y": 11,
+      "color": "#201f1d"
+    },
+    {
+      "x": 11,
+      "y": 11,
+      "color": "#4ccde3"
+    },
+    {
+      "x": 12,
+      "y": 11,
+      "color": "#1f1e1c"
+    },
+    {
+      "x": 13,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 14,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 12,
+      "color": "#201f1b"
+    },
+    {
+      "x": 3,
+      "y": 12,
+      "color": "#53cce6"
+    },
+    {
+      "x": 4,
+      "y": 12,
+      "color": "#57cbe9"
+    },
+    {
+      "x": 5,
+      "y": 12,
+      "color": "#55cbe1"
+    },
+    {
+      "x": 6,
+      "y": 12,
+      "color": "#4fcce5"
+    },
+    {
+      "x": 7,
+      "y": 12,
+      "color": "#58cde3"
+    },
+    {
+      "x": 8,
+      "y": 12,
+      "color": "#51ccec"
+    },
+    {
+      "x": 9,
+      "y": 12,
+      "color": "#231e1f"
+    },
+    {
+      "x": 10,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 12,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 13,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 3,
+      "y": 13,
+      "color": "#54cde5"
+    },
+    {
+      "x": 4,
+      "y": 13,
+      "color": "#202017"
+    },
+    {
+      "x": 5,
+      "y": 13,
+      "color": "#201e1f"
+    },
+    {
+      "x": 7,
+      "y": 13,
+      "color": "#54cde7"
+    },
+    {
+      "x": 8,
+      "y": 13,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 9,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 10,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 11,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 13,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 14,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 1,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 14,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 3,
+      "y": 14,
+      "color": "#1f1e1c"
+    },
+    {
+      "x": 4,
+      "y": 14,
+      "color": "#fbfdfa"
+    },
+    {
+      "x": 5,
+      "y": 14,
+      "color": "#fefcfd"
+    },
+    {
+      "x": 7,
+      "y": 14,
+      "color": "#272024"
+    },
+    {
+      "x": 8,
+      "y": 14,
+      "color": "#fefefe"
+    },
+    {
+      "x": 9,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 10,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 11,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 14,
+      "color": "#fbfbfb"
+    },
+    {
+      "x": 14,
+      "y": 14,
+      "color": "#ffffff"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "piece_1",
+      "name": "Piece 1",
+      "blocks": [
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#76ca4b"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#77cb49"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#231d21"
+        }
+      ],
+      "target_position": {
+        "x": 10,
+        "y": 4
+      }
+    },
+    {
+      "id": "piece_2",
+      "name": "Piece 2",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#212121"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#201f1d"
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "color": "#fefefe"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#22211d"
+        }
+      ],
+      "target_position": {
+        "x": 12,
+        "y": 7
+      }
+    },
+    {
+      "id": "piece_3",
+      "name": "Piece 3",
+      "blocks": [
+        {
+          "x": 1,
+          "y": 2,
+          "color": "#52cde2"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#53cce6"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#50d0e8"
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "color": "#4fd1e1"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#221d1a"
+        }
+      ],
+      "target_position": {
+        "x": 6,
+        "y": 4
+      }
+    },
+    {
+      "id": "piece_4",
+      "name": "Piece 4",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#201f1d"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#56cddf"
+        }
+      ],
+      "target_position": {
+        "x": 3,
+        "y": 10
+      }
+    },
+    {
+      "id": "piece_5",
+      "name": "Piece 5",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#feffff"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#21201c"
+        }
+      ],
+      "target_position": {
+        "x": 8,
+        "y": 1
+      }
+    },
+    {
+      "id": "piece_6",
+      "name": "Piece 6",
+      "blocks": [
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#1e201a"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#52cbe5"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#57cce1"
+        }
+      ],
+      "target_position": {
+        "x": 8,
+        "y": 9
+      }
+    },
+    {
+      "id": "piece_7",
+      "name": "Piece 7",
+      "blocks": [
+        {
+          "x": 2,
+          "y": 0,
+          "color": "#fefefe"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#fdfffe"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#221e16"
+        }
+      ],
+      "target_position": {
+        "x": 3,
+        "y": 3
+      }
+    },
+    {
+      "id": "piece_8",
+      "name": "Piece 8",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#ffffff"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#ffffff"
+        },
+        {
+          "x": 0,
+          "y": 2,
+          "color": "#fbfbfb"
+        }
+      ],
+      "target_position": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "id": "piece_9",
+      "name": "Piece 9",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 2,
+          "color": "#4fcfe3"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#221d1a"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#1e1d1b"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#58cde3"
+        }
+      ],
+      "target_position": {
+        "x": 7,
+        "y": 7
+      }
+    },
+    {
+      "id": "piece_10",
+      "name": "Piece 10",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#58cde2"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#58cde3"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#5dcadf"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#5acde2"
+        }
+      ],
+      "target_position": {
+        "x": 8,
+        "y": 6
+      }
+    },
+    {
+      "id": "piece_11",
+      "name": "Piece 11",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 2,
+          "color": "#79cb3d"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#79c945"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#1f1e1a"
+        }
+      ],
+      "target_position": {
+        "x": 5,
+        "y": 4
+      }
+    },
+    {
+      "id": "piece_12",
+      "name": "Piece 12",
+      "blocks": [
+        {
+          "x": 2,
+          "y": 0,
+          "color": "#58cde3"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#49cfe1"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#201e1f"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#49d1e8"
+        }
+      ],
+      "target_position": {
+        "x": 0,
+        "y": 8
+      }
+    },
+    {
+      "id": "piece_13",
+      "name": "Piece 13",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#f6f8f5"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#231d1a"
+        }
+      ],
+      "target_position": {
+        "x": 6,
+        "y": 13
+      }
+    },
+    {
+      "id": "piece_14",
+      "name": "Piece 14",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#1e1e1e"
+        }
+      ],
+      "target_position": {
+        "x": 11,
+        "y": 12
+      }
+    },
+    {
+      "id": "piece_15",
+      "name": "Piece 15",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 2,
+          "color": "#202020"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#fcfcfc"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#ffffff"
+        }
+      ],
+      "target_position": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    {
+      "id": "piece_16",
+      "name": "Piece 16",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#fbffff"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#191e1d"
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "color": "#71cc44"
+        }
+      ],
+      "target_position": {
+        "x": 7,
+        "y": 2
+      }
+    },
+    {
+      "id": "piece_17",
+      "name": "Piece 17",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#61cfe6"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#231e1b"
+        },
+        {
+          "x": 2,
+          "y": 0,
+          "color": "#4ecee2"
+        },
+        {
+          "x": 1,
+          "y": 1,
+          "color": "#221e16"
+        }
+      ],
+      "target_position": {
+        "x": 9,
+        "y": 8
+      }
+    },
+    {
+      "id": "piece_18",
+      "name": "Piece 18",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#57cce2"
+        },
+        {
+          "x": 1,
+          "y": 0,
+          "color": "#50c6de"
+        }
+      ],
+      "target_position": {
+        "x": 5,
+        "y": 9
+      }
+    },
+    {
+      "id": "piece_19",
+      "name": "Piece 19",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#26201b"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#71cb48"
+        }
+      ],
+      "target_position": {
+        "x": 13,
+        "y": 3
+      }
+    },
+    {
+      "id": "piece_20",
+      "name": "Piece 20",
+      "blocks": [
+        {
+          "x": 0,
+          "y": 2,
+          "color": "#1f1f1d"
+        },
+        {
+          "x": 0,
+          "y": 1,
+          "color": "#201e1f"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "color": "#fefefc"
+        }
+      ],
+      "target_position": {
+        "x": 14,
+        "y": 3
+      }
+    }
+  ],
+  "preview_duration": 3,
+  "time_limit": 60,
+  "hints_available": 3,
+  "next_level_id": "",
+  "pixels": [
+    {
+      "x": 0,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "color": "#feffff"
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "color": "#201e21"
+    },
+    {
+      "x": 11,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 0,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 0,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "color": "#feffff"
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "color": "#21201c"
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "color": "#71ce4a"
+    },
+    {
+      "x": 11,
+      "y": 1,
+      "color": "#231d1a"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "color": "#feffff"
+    },
+    {
+      "x": 13,
+      "y": 1,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 1,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "color": "#fbfbfb"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "color": "#241d1d"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "color": "#f9fefd"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "color": "#fefefe"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "color": "#f9f9f9"
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "color": "#fbffff"
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "color": "#191e1d"
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "color": "#71cc44"
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "color": "#76ca48"
+    },
+    {
+      "x": 11,
+      "y": 2,
+      "color": "#75ca3f"
+    },
+    {
+      "x": 12,
+      "y": 2,
+      "color": "#231e11"
+    },
+    {
+      "x": 13,
+      "y": 2,
+      "color": "#fdfcff"
+    },
+    {
+      "x": 14,
+      "y": 2,
+      "color": "#fefefe"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "color": "#202020"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "color": "#52cbe3"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "color": "#221e16"
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "color": "#fdfffe"
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "color": "#fefefe"
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "color": "#ffffff"
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "color": "#231d1a"
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "color": "#56cddd"
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "color": "#231c1c"
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "color": "#78cc4a"
+    },
+    {
+      "x": 11,
+      "y": 3,
+      "color": "#77c852"
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "color": "#6fc94b"
+    },
+    {
+      "x": 13,
+      "y": 3,
+      "color": "#26201b"
+    },
+    {
+      "x": 14,
+      "y": 3,
+      "color": "#fefefc"
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "color": "#21201c"
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "color": "#55cfe4"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "color": "#55cee6"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "color": "#221d1c"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "color": "#1f1e1a"
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "color": "#221d1a"
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "color": "#50d0e8"
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "color": "#58cde3"
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "color": "#1f1f1d"
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "color": "#77cb49"
+    },
+    {
+      "x": 11,
+      "y": 4,
+      "color": "#76ca4b"
+    },
+    {
+      "x": 12,
+      "y": 4,
+      "color": "#79cd4e"
+    },
+    {
+      "x": 13,
+      "y": 4,
+      "color": "#71cb48"
+    },
+    {
+      "x": 14,
+      "y": 4,
+      "color": "#201e1f"
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "color": "#201f1d"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "color": "#57c7e8"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "color": "#52cde1"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "color": "#58cde2"
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "color": "#75cd3e"
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "color": "#79c945"
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "color": "#77cc43"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "color": "#53cce6"
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "color": "#57cce2"
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "color": "#52cbe5"
+    },
+    {
+      "x": 10,
+      "y": 5,
+      "color": "#231d21"
+    },
+    {
+      "x": 11,
+      "y": 5,
+      "color": "#74cb45"
+    },
+    {
+      "x": 12,
+      "y": 5,
+      "color": "#77ce48"
+    },
+    {
+      "x": 13,
+      "y": 5,
+      "color": "#76ca48"
+    },
+    {
+      "x": 14,
+      "y": 5,
+      "color": "#1f1f1d"
+    },
+    {
+      "x": 0,
+      "y": 6,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "color": "#51cce1"
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "color": "#59cee4"
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "color": "#58cde2"
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "color": "#54cde5"
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "color": "#79cb3d"
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "color": "#4fd1e1"
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "color": "#52cde2"
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "color": "#58cde2"
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "color": "#58cde3"
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "color": "#75c94a"
+    },
+    {
+      "x": 12,
+      "y": 6,
+      "color": "#77cb4c"
+    },
+    {
+      "x": 13,
+      "y": 6,
+      "color": "#76ca4b"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "color": "#201e21"
+    },
+    {
+      "x": 0,
+      "y": 7,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "color": "#59cee4"
+    },
+    {
+      "x": 2,
+      "y": 7,
+      "color": "#57cce1"
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "color": "#201f19"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "color": "#55cfe3"
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "color": "#53cce6"
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "color": "#52cedf"
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "color": "#1e1d1b"
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "color": "#5dcadf"
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "color": "#5acde2"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "color": "#1f1f21"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 12,
+      "y": 7,
+      "color": "#212121"
+    },
+    {
+      "x": 13,
+      "y": 7,
+      "color": "#201f1d"
+    },
+    {
+      "x": 14,
+      "y": 7,
+      "color": "#fefefe"
+    },
+    {
+      "x": 0,
+      "y": 8,
+      "color": "#201e1f"
+    },
+    {
+      "x": 1,
+      "y": 8,
+      "color": "#49cfe1"
+    },
+    {
+      "x": 2,
+      "y": 8,
+      "color": "#58cde3"
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "color": "#1e1e1c"
+    },
+    {
+      "x": 4,
+      "y": 8,
+      "color": "#54cde5"
+    },
+    {
+      "x": 5,
+      "y": 8,
+      "color": "#50cde4"
+    },
+    {
+      "x": 6,
+      "y": 8,
+      "color": "#4ecde1"
+    },
+    {
+      "x": 7,
+      "y": 8,
+      "color": "#221d1a"
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "color": "#58cde3"
+    },
+    {
+      "x": 9,
+      "y": 8,
+      "color": "#61cfe6"
+    },
+    {
+      "x": 10,
+      "y": 8,
+      "color": "#231e1b"
+    },
+    {
+      "x": 11,
+      "y": 8,
+      "color": "#4ecee2"
+    },
+    {
+      "x": 12,
+      "y": 8,
+      "color": "#40cfe3"
+    },
+    {
+      "x": 13,
+      "y": 8,
+      "color": "#22211d"
+    },
+    {
+      "x": 14,
+      "y": 8,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 9,
+      "color": "#1f1d1e"
+    },
+    {
+      "x": 1,
+      "y": 9,
+      "color": "#49d1e8"
+    },
+    {
+      "x": 2,
+      "y": 9,
+      "color": "#57cee0"
+    },
+    {
+      "x": 3,
+      "y": 9,
+      "color": "#5acde2"
+    },
+    {
+      "x": 4,
+      "y": 9,
+      "color": "#55cfe4"
+    },
+    {
+      "x": 5,
+      "y": 9,
+      "color": "#53cce6"
+    },
+    {
+      "x": 6,
+      "y": 9,
+      "color": "#50c6de"
+    },
+    {
+      "x": 7,
+      "y": 9,
+      "color": "#4fcfe3"
+    },
+    {
+      "x": 8,
+      "y": 9,
+      "color": "#57cce1"
+    },
+    {
+      "x": 9,
+      "y": 9,
+      "color": "#53cfea"
+    },
+    {
+      "x": 10,
+      "y": 9,
+      "color": "#221e16"
+    },
+    {
+      "x": 11,
+      "y": 9,
+      "color": "#56cfe7"
+    },
+    {
+      "x": 12,
+      "y": 9,
+      "color": "#43cce5"
+    },
+    {
+      "x": 13,
+      "y": 9,
+      "color": "#25211b"
+    },
+    {
+      "x": 14,
+      "y": 9,
+      "color": "#fefefe"
+    },
+    {
+      "x": 0,
+      "y": 10,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 10,
+      "color": "#202020"
+    },
+    {
+      "x": 2,
+      "y": 10,
+      "color": "#52d0e3"
+    },
+    {
+      "x": 3,
+      "y": 10,
+      "color": "#56cddf"
+    },
+    {
+      "x": 4,
+      "y": 10,
+      "color": "#57cce1"
+    },
+    {
+      "x": 5,
+      "y": 10,
+      "color": "#57cce2"
+    },
+    {
+      "x": 6,
+      "y": 10,
+      "color": "#58cde2"
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "color": "#52cde1"
+    },
+    {
+      "x": 8,
+      "y": 10,
+      "color": "#52cbe5"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "color": "#1e201a"
+    },
+    {
+      "x": 10,
+      "y": 10,
+      "color": "#57cce4"
+    },
+    {
+      "x": 11,
+      "y": 10,
+      "color": "#54cae0"
+    },
+    {
+      "x": 12,
+      "y": 10,
+      "color": "#201e1f"
+    },
+    {
+      "x": 13,
+      "y": 10,
+      "color": "#fffeff"
+    },
+    {
+      "x": 14,
+      "y": 10,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 11,
+      "color": "#21201c"
+    },
+    {
+      "x": 3,
+      "y": 11,
+      "color": "#201f1d"
+    },
+    {
+      "x": 4,
+      "y": 11,
+      "color": "#1f1f1d"
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "color": "#241d21"
+    },
+    {
+      "x": 6,
+      "y": 11,
+      "color": "#1e1e1c"
+    },
+    {
+      "x": 7,
+      "y": 11,
+      "color": "#231e1d"
+    },
+    {
+      "x": 8,
+      "y": 11,
+      "color": "#1d2119"
+    },
+    {
+      "x": 9,
+      "y": 11,
+      "color": "#5acce5"
+    },
+    {
+      "x": 10,
+      "y": 11,
+      "color": "#201f1d"
+    },
+    {
+      "x": 11,
+      "y": 11,
+      "color": "#4ccde3"
+    },
+    {
+      "x": 12,
+      "y": 11,
+      "color": "#1f1e1c"
+    },
+    {
+      "x": 13,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 14,
+      "y": 11,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 12,
+      "color": "#201f1b"
+    },
+    {
+      "x": 3,
+      "y": 12,
+      "color": "#53cce6"
+    },
+    {
+      "x": 4,
+      "y": 12,
+      "color": "#57cbe9"
+    },
+    {
+      "x": 5,
+      "y": 12,
+      "color": "#55cbe1"
+    },
+    {
+      "x": 6,
+      "y": 12,
+      "color": "#4fcce5"
+    },
+    {
+      "x": 7,
+      "y": 12,
+      "color": "#58cde3"
+    },
+    {
+      "x": 8,
+      "y": 12,
+      "color": "#51ccec"
+    },
+    {
+      "x": 9,
+      "y": 12,
+      "color": "#231e1f"
+    },
+    {
+      "x": 10,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 11,
+      "y": 12,
+      "color": "#1e1e1e"
+    },
+    {
+      "x": 12,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 12,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 12,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 1,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 13,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 3,
+      "y": 13,
+      "color": "#54cde5"
+    },
+    {
+      "x": 4,
+      "y": 13,
+      "color": "#202017"
+    },
+    {
+      "x": 5,
+      "y": 13,
+      "color": "#201e1f"
+    },
+    {
+      "x": 6,
+      "y": 13,
+      "color": "#231d1a"
+    },
+    {
+      "x": 7,
+      "y": 13,
+      "color": "#54cde7"
+    },
+    {
+      "x": 8,
+      "y": 13,
+      "color": "#1f1f1f"
+    },
+    {
+      "x": 9,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 10,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 11,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 13,
+      "color": "#fcfcfc"
+    },
+    {
+      "x": 14,
+      "y": 13,
+      "color": "#ffffff"
+    },
+    {
+      "x": 0,
+      "y": 14,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 1,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 2,
+      "y": 14,
+      "color": "#fdfdfd"
+    },
+    {
+      "x": 3,
+      "y": 14,
+      "color": "#1f1e1c"
+    },
+    {
+      "x": 4,
+      "y": 14,
+      "color": "#fbfdfa"
+    },
+    {
+      "x": 5,
+      "y": 14,
+      "color": "#fefcfd"
+    },
+    {
+      "x": 6,
+      "y": 14,
+      "color": "#f6f8f5"
+    },
+    {
+      "x": 7,
+      "y": 14,
+      "color": "#272024"
+    },
+    {
+      "x": 8,
+      "y": 14,
+      "color": "#fefefe"
+    },
+    {
+      "x": 9,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 10,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 11,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 12,
+      "y": 14,
+      "color": "#ffffff"
+    },
+    {
+      "x": 13,
+      "y": 14,
+      "color": "#fbfbfb"
+    },
+    {
+      "x": 14,
+      "y": 14,
+      "color": "#ffffff"
+    }
+  ]
+}

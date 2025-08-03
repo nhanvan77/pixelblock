@@ -1,0 +1,2542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Viewer</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .level-info {
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .main-container {
+            display: flex;
+            flex-direction: column; /* Stack grid and pieces list vertically */
+            gap: 20px;
+            margin-bottom: 20px;
+            align-items: center; /* Center contents */
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .pieces-container {
+            width: 100%; /* Full width when below grid */
+            background-color: #2d2d2d;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .pieces-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .piece-item {
+            background-color: #3d3d3d;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 120px;
+            height: 150px;
+            justify-content: space-between;
+        }
+        
+        .piece-item.selected {
+            background-color: #4d4d4d;
+            border: 2px solid #ffffff;
+        }
+        
+        .piece-info {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .piece-actions {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .piece-delete, .piece-toggle-visibility {
+            background-color: #4d4d4d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            width: 24px;
+            height: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .piece-delete {
+            background-color: #ff4d4d;
+        }
+        
+        .eye-icon {
+            display: inline-block;
+            width: 16px;
+            height: 10px;
+            border: 1px solid #fff;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .eye-icon::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #fff;
+        }
+        
+        .eye-icon.closed {
+            height: 2px;
+            border-radius: 0;
+            background-color: #fff;
+            transform: rotate(-45deg);
+        }
+        
+        .eye-icon.closed::after {
+            display: none;
+        }
+        
+        .grid-container {
+            display: grid;
+            gap: 1px;
+            background-color: #2d2d2d;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            user-select: none; /* Prevent text selection while dragging */
+        }
+        
+        .grid-cell {
+            background-color: #3d3d3d;
+            aspect-ratio: 1;
+            position: relative;
+        }
+        
+        .grid-cell.hide-colors {
+            background-color: #3d3d3d !important;
+        }
+        
+        .grid-cell.selected {
+            border: 2px solid white;
+            box-sizing: border-box;
+        }
+        
+        .piece-color-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.6;
+            pointer-events: none;
+            border: 2px solid;
+            box-sizing: border-box;
+            background-color: transparent; /* Remove background color */
+        }
+ 
+        .piece-color-indicator.selected {
+            border-width: 3px;
+            opacity: 1;
+        }
+        
+        .piece-color-indicator.overlap {
+            background-color: rgba(255, 0, 0, 0.2) !important; /* Lighter red background for overlaps */
+            opacity: 0.7;
+            border: 2px dashed #ffffff;
+        }
+        
+        .piece-target-indicator {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        
+        .controls {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .color-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 10px 0;
+        }
+        
+        .json-controls {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            justify-content: flex-start;
+            margin: 10px 0;
+        }
+        
+        .upload-btn {
+            background-color: #3d3d3d;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .upload-btn:hover {
+            background-color: #4d4d4d;
+        }
+        
+        .json-output {
+            width: 100%;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 300px;
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            resize: vertical;
+        }
+        
+        button, input[type="file"] {
+            background-color: #3d3d3d;
+            color: #ffffff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 250px;
+            text-align: center;
+        }
+        
+        .small-button {
+            width: auto;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        
+        button:hover, input[type="file"]:hover {
+            background-color: #4d4d4d;
+        }
+
+        input[type="file"] {
+            color: transparent;
+            position: relative;
+        }
+
+        input[type="file"]::before {
+            content: ''; /* Remove the 'Select Level JSON File' text */
+            color: white;
+            position: absolute;
+            left: 0;
+            right: 0;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+        
+        input[type="color"] {
+            width: 50px;
+            height: 40px;
+            border: none;
+            border-radius: 5px;
+            background: none;
+            cursor: pointer;
+        }
+        
+        .color-label {
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .color-hex-input {
+            width: 75px;
+            padding: 2px 5px;
+            border: 1px solid #444;
+            border-radius: 3px;
+            background-color: #222;
+            color: white;
+            margin-left: 5px;
+            font-family: monospace;
+        }
+        
+        .mode-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .saved-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            justify-content: center;
+            min-height: 40px;
+            padding: 5px;
+            background-color: rgba(45, 45, 45, 0.5);
+            border-radius: 5px;
+        }
+        
+        .saved-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #444;
+            margin: 0 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .saved-color:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 3px white;
+        }
+        
+        .saved-color.active {
+            border: 2px solid white;
+            box-shadow: 0 0 5px white;
+        }
+        
+        .color-controls-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .active-mode {
+            background-color: #007acc;
+        }
+        
+        .piece-color-box {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            margin-right: 5px;
+            border-radius: 3px;
+        }
+        
+        .visibility-toggle {
+            background-color: #3d3d3d;
+            border: none;
+            border-radius: 3px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        /* Add styles for the grid controls */
+        .grid-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .number-input {
+            width: 60px;
+            padding: 5px;
+            border-radius: 4px;
+            border: none;
+            background-color: #3d3d3d;
+            color: white;
+            text-align: center;
+        }
+        
+        .upload-section {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #444;
+        }
+
+        .grid-dimensions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Add style for the pieces header section */
+        .pieces-header {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+        
+        .auto-generate {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: auto;
+        }
+        
+        .clear-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        .clear-button:hover {
+            background-color: #ff3333;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #2d2d2d;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            color: #e0e0e0;
+        }
+        
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: #fff;
+        }
+        
+        .template-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .template-categories label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .custom-template-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #555;
+        }
+        
+        .custom-template-section input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin: 5px 0 10px;
+            background-color: #3d3d3d;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+        }
+        
+        .custom-template-section textarea {
+            width: 100%;
+            height: 80px;
+            margin: 5px 0 10px;
+        }
+        
+        .pieces-footer {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .piece-preview {
+            display: grid;
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+        
+        .piece-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .preview-block {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="level-info">
+        <h1 id="level-name" style="display: none;">Level Viewer</h1>
+    </div>
+    
+    <!-- JSON upload moved to bottom with Generate JSON -->
+    
+    <div class="controls upload-section">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 15px; justify-content: center;">
+            <div style="display: flex; align-items: center;">
+                <label for="image-input" class="upload-btn">Upload</label>
+                <input type="file" id="image-input" accept="image/*" style="display: none;">
+            </div>
+            <div>
+                <label>Size: </label>
+                <input type="number" id="image-grid-width" class="number-input" value="8" min="1" max="30" style="width: 50px;">
+                ×
+                <input type="number" id="image-grid-height" class="number-input" value="8" min="1" max="30" style="width: 50px;">
+            </div>
+            <button id="extract-colors-btn">Extract Colors</button>
+        </div>
+        <canvas id="image-canvas" style="display: none;"></canvas>
+        <div id="color-preview-grid" style="display: none; margin-top: 10px; border: 1px solid #4d4d4d; padding: 10px;"></div>
+    </div>
+
+    <div class="grid-controls">
+        <div class="grid-dimensions">
+            <span>Grid: </span>
+            <label>Width: 
+                <input type="number" id="grid-width" class="number-input" value="10" min="1" max="30">
+            </label>
+            <label>Height: 
+                <input type="number" id="grid-height" class="number-input" value="10" min="1" max="30">
+            </label>
+        </div>
+        <button id="apply-grid" class="small-button">Apply Grid</button>
+    </div>
+
+            <div class="mode-controls">
+        <button id="draw-mode-btn" class="small-button">Vẽ grid</button>
+        <input type="color" id="draw-color" value="#FF5733">
+        <input type="text" id="draw-color-hex" class="color-hex-input" value="#FF5733" placeholder="#RRGGBB" maxlength="7">
+        <button id="toggle-grid-colors" class="small-button visibility-toggle" title="Toggle grid colors">
+            <span class="eye-icon"></span>
+        </button>
+        <div class="color-controls-container">
+            <div>
+                <span class="color-label">Fill Color:</span>
+                <input type="color" id="fill-color" value="#FF5733">
+                <input type="text" id="fill-color-hex" class="color-hex-input" value="#FF5733" placeholder="#RRGGBB" maxlength="7">
+                <button id="fill-all-btn" class="small-button">Fill All Blocks</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="saved-colors" class="saved-colors" style="margin: 10px auto; max-width: 800px;">
+        <!-- Saved colors will be displayed here -->
+    </div>
+    
+    <div class="main-container">
+        <div id="grid-container" class="grid-container"></div>
+        <div class="pieces-container">
+            <div class="pieces-header">
+                <h3>Pieces</h3>
+                <button id="toggle-all-pieces" class="visibility-toggle" title="Show/hide all pieces">
+                    <span class="eye-icon"></span>
+                </button>
+                <button id="add-piece-btn">Thêm mảnh</button>
+                <button id="clear-all-pieces-btn" class="clear-button" title="Clear all pieces">Xóa tất cả</button>
+                <div class="auto-generate">
+                    <input type="number" id="num-pieces" class="number-input" value="3" min="1" max="10" title="Number of pieces to generate">
+                    <button id="auto-generate-btn" title="Auto-generate pieces">Tự động tạo</button>
+                    <button id="template-settings-btn" class="small-button" title="Template settings">⚙️</button>
+                </div>
+            </div>
+            
+            <div id="template-settings-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3>Piece Template Settings</h3>
+                    <div class="template-categories">
+                        <label><input type="checkbox" class="template-category" value="basic" checked> Basic shapes</label>
+                        <label><input type="checkbox" class="template-category" value="tetromino" checked> Tetromino shapes</label>
+                        <label><input type="checkbox" class="template-category" value="advanced" checked> Advanced shapes</label>
+                        <label><input type="checkbox" class="template-category" value="small" checked> Small shapes</label>
+                        <label><input type="checkbox" class="template-category" value="custom" checked> Custom shapes</label>
+                    </div>
+                    <div class="custom-template-section">
+                        <h4>Add Custom Template</h4>
+                        <div>
+                            <label>Name: <input type="text" id="custom-template-name"></label>
+                        </div>
+                        <div>
+                            <label>Blocks JSON: <textarea id="custom-template-blocks" placeholder='[{"x":0,"y":0},{"x":1,"y":0}]'></textarea></label>
+                        </div>
+                        <button id="add-custom-template-btn">Add Template</button>
+                    </div>
+                </div>
+            </div>
+            <div id="pieces-list" class="pieces-list">
+                <!-- Pieces will be added here -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <div class="json-controls">
+            <button id="generate-json-btn">Generate JSON</button>
+            <button id="save-json-btn">Save JSON</button>
+            <div class="json-upload">
+                <label for="file-input" class="upload-btn">Upload JSON</label>
+                <input type="file" id="file-input" accept=".json" style="display: none;">
+            </div>
+        </div>
+        
+        <div class="json-output">
+            <textarea id="json-output" readonly placeholder="Generated JSON will appear here"></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const fileInput = document.getElementById('file-input');
+        const fillColorInput = document.getElementById('fill-color');
+        const fillColorHexInput = document.getElementById('fill-color-hex');
+        const fillAllBtn = document.getElementById('fill-all-btn');
+        const savedColorsContainer = document.getElementById('saved-colors');
+        const generateJsonBtn = document.getElementById('generate-json-btn');
+        const saveJsonBtn = document.getElementById('save-json-btn');
+        const jsonOutput = document.getElementById('json-output');
+        const piecesListElement = document.getElementById('pieces-list');
+        const addPieceBtn = document.getElementById('add-piece-btn');
+        const clearAllPiecesBtn = document.getElementById('clear-all-pieces-btn');
+        const autoGenerateBtn = document.getElementById('auto-generate-btn');
+        const numPiecesInput = document.getElementById('num-pieces');
+        const drawModeBtn = document.getElementById('draw-mode-btn');
+        const drawColorInput = document.getElementById('draw-color');
+        const drawColorHexInput = document.getElementById('draw-color-hex');
+        const gridContainer = document.getElementById('grid-container');
+        const toggleGridColorsBtn = document.getElementById('toggle-grid-colors');
+        const gridWidthInput = document.getElementById('grid-width');
+        const gridHeightInput = document.getElementById('grid-height');
+        const applyGridBtn = document.getElementById('apply-grid');
+        const toggleAllPiecesBtn = document.getElementById('toggle-all-pieces');
+        const imageInput = document.getElementById('image-input');
+        const imageGridWidth = document.getElementById('image-grid-width');
+        const imageGridHeight = document.getElementById('image-grid-height');
+        const extractColorsBtn = document.getElementById('extract-colors-btn');
+        const imageCanvas = document.getElementById('image-canvas');
+        const colorPreviewGrid = document.getElementById('color-preview-grid');
+        
+        let currentLevelData = null;
+        let gridWidth = 10; // Default values
+        let gridHeight = 10;
+        let extractedPixels = [];
+        let pieces = [];
+        let selectedPiece = null;
+        let pieceTargetMode = 'block'; // Chỉ còn mode 'block' vì không cần mode 'target' nữa
+        let interactionMode = 'draw'; // 'draw' or 'piece'
+        let isMouseDown = false;
+        let lastCellInteracted = null; // To avoid processing the same cell multiple times
+        let showGridColors = true; // Whether to show grid colors
+        let hiddenPieces = {}; // Track which pieces are hidden
+        let allPiecesVisible = true; // Track global visibility state
+        let hasUnsavedChanges = false; // Track if there are unsaved changes
+        
+        // Function to mark that there are unsaved changes
+        function markUnsavedChanges() {
+            hasUnsavedChanges = true;
+            generateJsonBtn.style.backgroundColor = '#ffc107'; // Highlight with a yellow color
+            generateJsonBtn.style.boxShadow = '0 0 5px #ffc107';
+        }
+        
+        // Function to mark that changes are saved
+        function markChangesSaved() {
+            hasUnsavedChanges = false;
+            generateJsonBtn.style.backgroundColor = '#3d3d3d'; // Reset to default color
+            generateJsonBtn.style.boxShadow = '';
+        }
+        
+        // Define a set of distinct colors for pieces
+        const pieceColors = [
+            '#FF5733', // Orange Red
+            '#33FF57', // Lime Green
+            '#3357FF', // Royal Blue
+            '#FF33A8', // Pink
+            '#33FFF5', // Cyan
+            '#F5FF33', // Yellow
+            '#A833FF', // Purple
+            '#FF8C33', // Orange
+            '#33FFB8', // Seafoam
+            '#337AFF', // Dodger Blue
+            '#FF33F5', // Magenta
+            '#B8FF33', // Chartreuse
+            '#33A8FF', // Azure
+            '#FF337A', // Crimson
+            '#7AFF33'  // Bright Green
+        ];
+        
+        // Load custom templates from JSON file and then initialize the app
+        loadCustomTemplatesFromJson()
+            .then(() => {
+                // Log the loaded custom templates
+                console.log("Custom templates loaded:", pieceTemplatesDatabase.custom);
+                
+                // Initialize with some default pieces
+                initializeData();
+            });
+        
+        // Add references to template settings elements
+        const templateSettingsBtn = document.getElementById('template-settings-btn');
+        const templateSettingsModal = document.getElementById('template-settings-modal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const templateCategoryCheckboxes = document.querySelectorAll('.template-category');
+        const addCustomTemplateBtn = document.getElementById('add-custom-template-btn');
+        const customTemplateName = document.getElementById('custom-template-name');
+        const customTemplateBlocks = document.getElementById('custom-template-blocks');
+        
+        // Variables to track which template categories are active
+        let activeTemplateCategories = ['basic', 'tetromino', 'advanced', 'small', 'custom'];
+        
+        // Template settings button event
+        templateSettingsBtn.addEventListener('click', () => {
+            templateSettingsModal.style.display = 'block';
+        });
+        
+        // Close modal button event
+        closeModalBtn.addEventListener('click', () => {
+            templateSettingsModal.style.display = 'none';
+        });
+        
+        // Click outside modal to close
+        window.addEventListener('click', (event) => {
+            if (event.target === templateSettingsModal) {
+                templateSettingsModal.style.display = 'none';
+            }
+        });
+        
+        // Template category checkbox events
+        templateCategoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    if (!activeTemplateCategories.includes(checkbox.value)) {
+                        activeTemplateCategories.push(checkbox.value);
+                        console.log(`Enabled template category: ${checkbox.value}`);
+                    }
+                } else {
+                    activeTemplateCategories = activeTemplateCategories.filter(cat => cat !== checkbox.value);
+                    console.log(`Disabled template category: ${checkbox.value}`);
+                }
+                
+                // Log current active categories
+                console.log("Active template categories:", activeTemplateCategories);
+            });
+        });
+        
+        // Function to get only active template categories
+        function getActiveTemplates() {
+            let templates = [];
+            activeTemplateCategories.forEach(category => {
+                if (pieceTemplatesDatabase[category]) {
+                    templates = templates.concat(pieceTemplatesDatabase[category]);
+                    console.log(`Adding ${pieceTemplatesDatabase[category].length} templates from category: ${category}`);
+                }
+            });
+            return templates;
+        }
+        
+        // Add custom template button event
+        addCustomTemplateBtn.addEventListener('click', () => {
+            const name = customTemplateName.value.trim();
+            const blocksText = customTemplateBlocks.value.trim();
+            
+            if (!name) {
+                alert('Please enter a name for your template');
+                return;
+            }
+            
+            try {
+                const blocks = JSON.parse(blocksText);
+                if (!Array.isArray(blocks)) {
+                    throw new Error('Blocks must be an array');
+                }
+                
+                for (const block of blocks) {
+                    if (typeof block.x !== 'number' || typeof block.y !== 'number') {
+                        throw new Error('Each block must have x and y coordinates');
+                    }
+                }
+                
+                                 // Add the custom template
+                 addCustomPieceTemplate(name, blocks);
+                 
+                 // Clear inputs
+                 customTemplateName.value = '';
+                 customTemplateBlocks.value = '';
+                 
+                 // Show success message with warning about not saving to JSON
+                 alert(`Custom template "${name}" added successfully!\n\nNote: This template is only available for the current session and will not be saved to the JSON file.`);
+                 
+                 // Add information about how to permanently save templates
+                 console.log(`To permanently save templates, add them to the custom_templates.json file.`);
+                
+            } catch (error) {
+                alert(`Error adding custom template: ${error.message}`);
+            }
+        });
+        
+        // Add event listeners
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    currentLevelData = JSON.parse(e.target.result);
+                    gridWidth = currentLevelData.grid.width;
+                    gridHeight = currentLevelData.grid.height;
+                    
+                    // Load pieces if available
+                    if (currentLevelData.pieces && Array.isArray(currentLevelData.pieces)) {
+                        pieces = currentLevelData.pieces;
+
+                        // Offset each piece's blocks to the global grid using its target_position so they render correctly
+                        pieces.forEach(piece => {
+                            if (piece && piece.target_position && piece.blocks && piece.blocks.length > 0) {
+                                const minBlockX = Math.min(...piece.blocks.map(b => b.x));
+                                const minBlockY = Math.min(...piece.blocks.map(b => b.y));
+                                // If blocks appear to be stored in local coordinates (normalised), shift them once
+                                if (minBlockX !== piece.target_position.x || minBlockY !== piece.target_position.y) {
+                                    piece.blocks = piece.blocks.map(block => ({
+                                        x: block.x + piece.target_position.x,
+                                        y: block.y + piece.target_position.y
+                                    }));
+                                }
+                            }
+                        });
+                    } else {
+                        pieces = [];
+                    }
+                    
+                    // Reset hidden pieces
+                    hiddenPieces = {};
+                    
+                    displayLevel(currentLevelData);
+                    renderPiecesList();
+                } catch (error) {
+                    console.error('Error parsing JSON:', error);
+                    document.getElementById('level-name').textContent = 'Error parsing JSON';
+                }
+            };
+            reader.onerror = () => {
+                console.error('Error reading file');
+                document.getElementById('level-name').textContent = 'Error reading file';
+            };
+            reader.readAsText(file);
+        });
+        
+        // Fill all blocks with selected color
+        fillAllBtn.addEventListener('click', () => {
+            const color = fillColorInput.value;
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach(cell => {
+                cell.style.backgroundColor = color;
+            });
+            
+            // Auto-save color when filling all
+            autoSaveColor(color);
+            markUnsavedChanges();
+        });
+        
+        // Toggle grid colors
+        toggleGridColorsBtn.addEventListener('click', () => {
+            showGridColors = !showGridColors;
+            toggleGridColors(showGridColors);
+            
+            // Update the eye icon
+            const eyeIcon = toggleGridColorsBtn.querySelector('.eye-icon');
+            if (showGridColors) {
+                eyeIcon.classList.remove('closed');
+            } else {
+                eyeIcon.classList.add('closed');
+            }
+            
+            markUnsavedChanges();
+        });
+        
+        // Function to toggle visibility of grid colors
+        function toggleGridColors(show) {
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach(cell => {
+                if (show) {
+                    cell.classList.remove('hide-colors');
+                } else {
+                    cell.classList.add('hide-colors');
+                }
+            });
+        }
+        
+        // Toggle piece visibility
+        function togglePieceVisibility(pieceId) {
+            hiddenPieces[pieceId] = !hiddenPieces[pieceId];
+            updatePieceVisualizers();
+            
+            // Update the eye icon in the piece list
+            const pieceItem = document.getElementById(`piece-${pieceId}`);
+            if (pieceItem) {
+                const eyeIcon = pieceItem.querySelector('.eye-icon');
+                if (hiddenPieces[pieceId]) {
+                    eyeIcon.classList.add('closed');
+                } else {
+                    eyeIcon.classList.remove('closed');
+                }
+            }
+            
+            markUnsavedChanges();
+        }
+        
+        // Toggle drawing mode
+        drawModeBtn.addEventListener('click', () => {
+            setInteractionMode('draw');
+        });
+        
+        // Synchronize draw color with fill color
+        drawColorInput.addEventListener('change', () => {
+            fillColorInput.value = drawColorInput.value;
+            // Update hex inputs
+            drawColorHexInput.value = drawColorInput.value;
+            fillColorHexInput.value = drawColorInput.value;
+        });
+        
+        // Synchronize hex inputs
+        drawColorHexInput.addEventListener('input', () => {
+            // Validate hex color format
+            if (/^#[0-9A-F]{6}$/i.test(drawColorHexInput.value)) {
+                drawColorInput.value = drawColorHexInput.value;
+                fillColorInput.value = drawColorHexInput.value;
+                fillColorHexInput.value = drawColorHexInput.value;
+            }
+        });
+        
+        fillColorHexInput.addEventListener('input', () => {
+            // Validate hex color format
+            if (/^#[0-9A-F]{6}$/i.test(fillColorHexInput.value)) {
+                fillColorInput.value = fillColorHexInput.value;
+                drawColorInput.value = fillColorHexInput.value;
+                drawColorHexInput.value = fillColorHexInput.value;
+            }
+        });
+        
+        // Update hex inputs when fill color changes
+        fillColorInput.addEventListener('change', () => {
+            drawColorInput.value = fillColorInput.value;
+            drawColorHexInput.value = fillColorInput.value;
+            fillColorHexInput.value = fillColorInput.value;
+        });
+        
+        // Generate JSON based on grid state
+        generateJsonBtn.addEventListener('click', () => {
+            generateJson();
+            markChangesSaved();
+        });
+        
+        // Save JSON to file
+        saveJsonBtn.addEventListener('click', () => {
+            const jsonContent = jsonOutput.value;
+            if (!jsonContent || jsonContent.trim() === '') {
+                alert('Please generate JSON first');
+                return;
+            }
+            
+            try {
+                // Create a Blob with the JSON content
+                const blob = new Blob([jsonContent], { type: 'application/json' });
+                
+                // Create a temporary URL to the blob
+                const url = URL.createObjectURL(blob);
+                
+                // Create a temporary anchor element
+                const a = document.createElement('a');
+                a.href = url;
+                
+                // Set the download filename
+                let filename = 'level.json';
+                if (currentLevelData && currentLevelData.id) {
+                    filename = `${currentLevelData.id}.json`;
+                }
+                a.download = filename;
+                
+                // Append to the document, click it, and remove it
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                // Release the temporary URL
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error saving JSON file:', error);
+                alert('Failed to save JSON file');
+            }
+        });
+
+        // Add event listener for Apply Grid button
+        applyGridBtn.addEventListener('click', () => {
+            // Get the width and height from inputs
+            gridWidth = parseInt(gridWidthInput.value) || 10; // Fallback to default if parsing fails
+            gridHeight = parseInt(gridHeightInput.value) || 10;
+            
+            // Limit to reasonable values
+            gridWidth = Math.min(Math.max(gridWidth, 1), 30);
+            gridHeight = Math.min(Math.max(gridHeight, 1), 30);
+            
+            // Update the inputs with the potentially adjusted values
+            gridWidthInput.value = gridWidth;
+            gridHeightInput.value = gridHeight;
+            
+            // Create or update level data with new grid dimensions
+            if (currentLevelData) {
+                // Update existing level data
+                currentLevelData.grid.width = gridWidth;
+                currentLevelData.grid.height = gridHeight;
+                // Make sure we preserve the pieces data
+                if (!currentLevelData.pieces) {
+                    currentLevelData.pieces = pieces;
+                }
+            } else {
+                // Create new level data
+                currentLevelData = {
+                    id: "new_level",
+                    name: "Level Viewer",
+                    description: "",
+                    difficulty: 1,
+                    grid: {
+                        width: gridWidth,
+                        height: gridHeight,
+                        block_size: 40
+                    },
+                    board: {
+                        background_color: "#F2E8DC"
+                    },
+                    fixed_blocks: [],
+                    pieces: pieces, // Use current pieces
+                    preview_duration: 3.0,
+                    time_limit: 60,
+                    hints_available: 3,
+                    next_level_id: ""
+                };
+            }
+            
+            // Display the grid with new dimensions but keep current pieces
+            displayLevel({
+                name: "Level Viewer",
+                description: "",
+                grid: {
+                    width: gridWidth,
+                    height: gridHeight,
+                    block_size: 40
+                },
+                pieces: pieces,
+                pixels: []
+            });
+            
+            markUnsavedChanges();
+        });
+        
+        // Get color for a piece based on its index
+        function getPieceColor(pieceIndex) {
+            return pieceColors[pieceIndex % pieceColors.length];
+        }
+        
+        // Set interaction mode (draw or piece)
+        function setInteractionMode(mode) {
+            interactionMode = mode;
+            
+            // Update UI
+            updateModeUI();
+            
+            if (mode === 'draw') {
+                // Deselect piece
+                if (selectedPiece) {
+                    selectedPiece = null;
+                    
+                    // Update piece selection UI
+                    const pieceItems = document.querySelectorAll('.piece-item');
+                    pieceItems.forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                }
+            }
+            
+            // Always update piece visualizers
+            updatePieceVisualizers();
+        }
+        
+        // Update mode UI based on current mode
+        function updateModeUI() {
+            if (interactionMode === 'draw') {
+                drawModeBtn.classList.add('active-mode');
+            } else {
+                drawModeBtn.classList.remove('active-mode');
+            }
+        }
+        
+        // Initialize data with a default piece
+        function initializeData() {
+            if (pieces.length === 0) {
+                pieces = [
+                    {
+                        id: "piece_1",
+                        name: "Piece 1",
+                        blocks: [],
+                        target_position: null
+                    }
+                ];
+                
+                renderPiecesList();
+            }
+            
+            // Tính toán target_position cho tất cả các mảnh
+            updateAllTargetPositions();
+            
+            // Set initial mode
+            setInteractionMode('draw');
+        }
+        
+        // Add a new piece
+        addPieceBtn.addEventListener('click', () => {
+            const newPiece = {
+                id: `piece_${pieces.length + 1}`,
+                name: `Piece ${pieces.length + 1}`,
+                blocks: [],
+                target_position: null
+            };
+            
+            pieces.push(newPiece);
+            renderPiecesList();
+            selectPiece(newPiece.id);
+            markUnsavedChanges();
+        });
+        
+        // Clear all pieces with confirmation
+        clearAllPiecesBtn.addEventListener('click', () => {
+            if (pieces.length === 0) {
+                alert('Không có mảnh nào để xóa!');
+                return;
+            }
+            
+            const confirmClear = confirm(`Bạn có chắc chắn muốn xóa tất cả ${pieces.length} mảnh không?`);
+            
+            if (confirmClear) {
+                // Save the selected piece to reselect after clearing
+                selectedPiece = null;
+                
+                // Clear the pieces array
+                pieces = [];
+                
+                // Reset hidden pieces
+                hiddenPieces = {};
+                
+                // Update UI
+                renderPiecesList();
+                updatePieceVisualizers();
+                
+                console.log('Đã xóa tất cả các mảnh');
+                markUnsavedChanges();
+            }
+        });
+        
+        // Piece shape templates database
+        const pieceTemplatesDatabase = {
+            // Basic shapes
+            basic: [
+                // L shape
+                { 
+                    name: "L shape", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: 1, y: 2}]
+                },
+                // T shape
+                { 
+                    name: "T shape", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 1, y: 1}]
+                },
+                // Square shape
+                { 
+                    name: "Square", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}]
+                },
+                // Z shape
+                { 
+                    name: "Z shape", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 2, y: 1}]
+                },
+                // I shape (horizontal)
+                { 
+                    name: "I shape (h)", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}]
+                },
+                // I shape (vertical)
+                { 
+                    name: "I shape (v)", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}]
+                },
+                // Small L shape
+                { 
+                    name: "Small L", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}]
+                },
+                // Small Z shape
+                { 
+                    name: "Small Z", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 1, y: 1}]
+                }
+            ],
+            
+            // Tetromino shapes (classic tetris pieces)
+            tetromino: [
+                { 
+                    name: "I tetromino", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 3, y: 0}]
+                },
+                { 
+                    name: "J tetromino", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: -1, y: 2}]
+                },
+                { 
+                    name: "L tetromino", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: 1, y: 2}]
+                },
+                { 
+                    name: "O tetromino", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}]
+                },
+                { 
+                    name: "S tetromino", 
+                    blocks: [{x: 1, y: 0}, {x: 2, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}]
+                },
+                { 
+                    name: "T tetromino", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}, {x: 1, y: 1}]
+                },
+                { 
+                    name: "Z tetromino", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 2, y: 1}]
+                }
+            ],
+            
+            // Advanced shapes (more complex patterns)
+            advanced: [
+                { 
+                    name: "Cross", 
+                    blocks: [{x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1}, {x: 1, y: 2}]
+                },
+                { 
+                    name: "U shape", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: 1, y: 0}, {x: 1, y: 2}]
+                },
+                { 
+                    name: "H shape", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}, {x: 1, y: 1}, {x: 2, y: 0}, {x: 2, y: 1}, {x: 2, y: 2}]
+                },
+                { 
+                    name: "Step pattern", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 2, y: 1}, {x: 2, y: 2}, {x: 3, y: 2}]
+                },
+                { 
+                    name: "Diamond", 
+                    blocks: [{x: 1, y: 0}, {x: 0, y: 1}, {x: 2, y: 1}, {x: 1, y: 2}]
+                },
+                { 
+                    name: "Plus", 
+                    blocks: [{x: 1, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}, {x: 2, y: 1}, {x: 1, y: 2}]
+                }
+            ],
+            
+            // Small shapes (2-3 blocks)
+            small: [
+                { 
+                    name: "Corner", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]
+                },
+                { 
+                    name: "Dot", 
+                    blocks: [{x: 0, y: 0}]
+                },
+                { 
+                    name: "Duo horizontal", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}]
+                },
+                { 
+                    name: "Duo vertical", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}]
+                },
+                { 
+                    name: "Diagonal", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 1}]
+                },
+                { 
+                    name: "Trio horizontal", 
+                    blocks: [{x: 0, y: 0}, {x: 1, y: 0}, {x: 2, y: 0}]
+                },
+                { 
+                    name: "Trio vertical", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 0, y: 2}]
+                },
+                { 
+                    name: "Trio L", 
+                    blocks: [{x: 0, y: 0}, {x: 0, y: 1}, {x: 1, y: 1}]
+                }
+            ],
+            
+            // Custom category for user-defined pieces
+            custom: []
+        };
+        
+        // Function to add custom piece templates
+        function addCustomPieceTemplate(name, blocks) {
+            pieceTemplatesDatabase.custom.push({
+                name: name,
+                blocks: blocks
+            });
+        }
+        
+        // Custom templates data embedded directly in JavaScript to avoid CORS issues
+        const customTemplatesData = {
+          "custom_piece_templates": [
+            {
+              "name": "Arrow Up",
+              "blocks": [
+                {"x": 0, "y": 1},
+                {"x": 1, "y": 0},
+                {"x": 1, "y": 1},
+                {"x": 1, "y": 2},
+                {"x": 2, "y": 1}
+              ]
+            },
+            {
+              "name": "C Shape",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 0, "y": 1},
+                {"x": 0, "y": 2},
+                {"x": 1, "y": 0},
+                {"x": 1, "y": 2}
+              ]
+            },
+            {
+              "name": "E Shape",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 0, "y": 1},
+                {"x": 0, "y": 2},
+                {"x": 1, "y": 0},
+                {"x": 1, "y": 1},
+                {"x": 1, "y": 2}
+              ]
+            },
+            {
+              "name": "X Shape",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 0, "y": 2},
+                {"x": 1, "y": 1},
+                {"x": 2, "y": 0},
+                {"x": 2, "y": 2}
+              ]
+            },
+            {
+              "name": "Stairs",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 1, "y": 0},
+                {"x": 1, "y": 1},
+                {"x": 2, "y": 1},
+                {"x": 2, "y": 2},
+                {"x": 3, "y": 2}
+              ]
+            },
+            {
+              "name": "Window",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 0, "y": 1},
+                {"x": 0, "y": 2},
+                {"x": 1, "y": 0},
+                {"x": 1, "y": 2},
+                {"x": 2, "y": 0},
+                {"x": 2, "y": 1},
+                {"x": 2, "y": 2}
+              ]
+            },
+            {
+              "name": "Zigzag",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 1, "y": 0},
+                {"x": 1, "y": 1},
+                {"x": 2, "y": 1},
+                {"x": 2, "y": 2},
+                {"x": 3, "y": 2}
+              ]
+            },
+            {
+              "name": "Corner Large",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 0, "y": 1},
+                {"x": 0, "y": 2},
+                {"x": 0, "y": 3},
+                {"x": 1, "y": 0},
+                {"x": 2, "y": 0},
+                {"x": 3, "y": 0}
+              ]
+            },
+            {
+              "name": "Snake",
+              "blocks": [
+                {"x": 0, "y": 0},
+                {"x": 0, "y": 1},
+                {"x": 0, "y": 2},
+                {"x": 1, "y": 2},
+                {"x": 2, "y": 2},
+                {"x": 2, "y": 1},
+                {"x": 2, "y": 0}
+              ]
+            },
+            {
+              "name": "Triangle",
+              "blocks": [
+                {"x": 0, "y": 2},
+                {"x": 1, "y": 1},
+                {"x": 1, "y": 2},
+                {"x": 2, "y": 0},
+                {"x": 2, "y": 1},
+                {"x": 2, "y": 2}
+              ]
+            }
+          ]
+        };
+        
+        // Function to load custom templates from embedded data
+        function loadCustomTemplatesFromJson() {
+            return new Promise((resolve) => {
+                try {
+                    // Clear existing custom templates
+                    pieceTemplatesDatabase.custom = [];
+                    
+                    // Add templates from the embedded data
+                    if (customTemplatesData.custom_piece_templates && Array.isArray(customTemplatesData.custom_piece_templates)) {
+                        customTemplatesData.custom_piece_templates.forEach(template => {
+                            if (template.blocks && Array.isArray(template.blocks)) {
+                                // Use template name if available, otherwise generate a name
+                                const name = template.name || `Custom Shape ${pieceTemplatesDatabase.custom.length + 1}`;
+                                addCustomPieceTemplate(name, template.blocks);
+                            }
+                        });
+                        console.log(`✅ Loaded ${pieceTemplatesDatabase.custom.length} custom templates directly`);
+                    }
+                    resolve();
+                } catch (error) {
+                    console.error('Error loading custom templates:', error);
+                    resolve(); // Resolve anyway to not block app initialization
+                }
+            });
+        }
+        
+        // Combine all template categories into a flat array for random selection
+        function getAllPieceTemplates() {
+            let allTemplates = [];
+            for (const category in pieceTemplatesDatabase) {
+                allTemplates = allTemplates.concat(pieceTemplatesDatabase[category]);
+            }
+            return allTemplates;
+        }
+        
+        // Function to auto-generate pieces
+        autoGenerateBtn.addEventListener('click', () => {
+            const numPiecesToGenerate = parseInt(numPiecesInput.value) || 3;
+            
+            // Log how many templates are available in each category
+            console.log("Available templates:");
+            for (const category in pieceTemplatesDatabase) {
+                console.log(`- ${category}: ${pieceTemplatesDatabase[category].length} templates`);
+            }
+            
+            // Get current grid dimensions
+            const availableWidth = gridWidth;
+            const availableHeight = gridHeight;
+            
+            if (availableWidth <= 2 || availableHeight <= 2) {
+                alert('Grid size too small to generate pieces');
+                return;
+            }
+            
+            // Track occupied cells to prevent overlaps
+            let occupiedCells = {};
+            
+            // Get cells already occupied by existing pieces
+            pieces.forEach(piece => {
+                if (piece.blocks && piece.blocks.length > 0) {
+                    piece.blocks.forEach(block => {
+                        occupiedCells[`${block.x},${block.y}`] = true;
+                    });
+                }
+            });
+            
+            // Generate the requested number of pieces
+            const generatedPieces = [];
+            
+            for (let i = 0; i < numPiecesToGenerate; i++) {
+                // Maximum attempts to find a valid placement
+                const maxAttempts = 50;
+                let attempts = 0;
+                let placedPiece = null;
+                
+                while (attempts < maxAttempts && !placedPiece) {
+                    attempts++;
+                    
+                    // Select a random template from active categories
+                    let activeTemplates = getActiveTemplates();
+                    if (activeTemplates.length === 0) {
+                        console.warn('No active template categories selected. Using all templates.');
+                        activeTemplates = getAllPieceTemplates();
+                    }
+                    
+                    // Make sure we have templates to use
+                    if (activeTemplates.length === 0) {
+                        console.error('No templates available!');
+                        return;
+                    }
+                    
+                    const templateIndex = Math.floor(Math.random() * activeTemplates.length);
+                    const templateObj = activeTemplates[templateIndex];
+                    const template = templateObj.blocks;
+                    
+                    // Log the selected template for debugging
+                    console.log(`Selected template: ${templateObj.name} (from category: ${getTemplateCategoryName(templateObj)})`);
+                    
+                    // Helper function to identify which category a template belongs to
+                    function getTemplateCategoryName(template) {
+                        for (const category in pieceTemplatesDatabase) {
+                            if (pieceTemplatesDatabase[category].some(t => t.name === template.name)) {
+                                return category;
+                            }
+                        }
+                        return 'unknown';
+                    }
+                    
+                    // Randomly decide if the piece should be rotated or flipped
+                    const rotations = Math.floor(Math.random() * 4); // 0-3 rotations (90° each)
+                    const flipHorizontal = Math.random() > 0.5;
+                    const flipVertical = Math.random() > 0.5;
+                    
+                    // Apply transformations to template
+                    let transformedTemplate = JSON.parse(JSON.stringify(template));
+                    
+                    // Apply rotations
+                    for (let r = 0; r < rotations; r++) {
+                        transformedTemplate = transformedTemplate.map(block => ({
+                            x: -block.y,
+                            y: block.x
+                        }));
+                    }
+                    
+                    // Apply flips
+                    if (flipHorizontal) {
+                        transformedTemplate = transformedTemplate.map(block => ({
+                            x: -block.x,
+                            y: block.y
+                        }));
+                    }
+                    
+                    if (flipVertical) {
+                        transformedTemplate = transformedTemplate.map(block => ({
+                            x: block.x,
+                            y: -block.y
+                        }));
+                    }
+                    
+                    // Normalize coordinates to start from (0,0)
+                    const minX = Math.min(...transformedTemplate.map(b => b.x));
+                    const minY = Math.min(...transformedTemplate.map(b => b.y));
+                    
+                    transformedTemplate = transformedTemplate.map(block => ({
+                        x: block.x - minX,
+                        y: block.y - minY
+                    }));
+                    
+                    // Get piece dimensions
+                    const pieceWidth = Math.max(...transformedTemplate.map(b => b.x)) + 1;
+                    const pieceHeight = Math.max(...transformedTemplate.map(b => b.y)) + 1;
+                    
+                    // Try to find a valid position
+                    if (pieceWidth <= availableWidth && pieceHeight <= availableHeight) {
+                        // Find possible starting positions
+                        const validPositions = [];
+                        
+                        for (let x = 0; x <= availableWidth - pieceWidth; x++) {
+                            for (let y = 0; y <= availableHeight - pieceHeight; y++) {
+                                let isValid = true;
+                                
+                                // Check if all blocks in this position would be valid
+                                for (const block of transformedTemplate) {
+                                    const gridX = x + block.x;
+                                    const gridY = y + block.y;
+                                    
+                                    // Check if position is already occupied
+                                    if (occupiedCells[`${gridX},${gridY}`]) {
+                                        isValid = false;
+                                        break;
+                                    }
+                                }
+                                
+                                if (isValid) {
+                                    validPositions.push({x, y});
+                                }
+                            }
+                        }
+                        
+                        // If we found valid positions, randomly select one
+                        if (validPositions.length > 0) {
+                            const position = validPositions[Math.floor(Math.random() * validPositions.length)];
+                            
+                            // Create the piece at this position
+                            const pieceBlocks = transformedTemplate.map(block => ({
+                                x: position.x + block.x,
+                                y: position.y + block.y
+                            }));
+                            
+                            // Mark these cells as occupied
+                            pieceBlocks.forEach(block => {
+                                occupiedCells[`${block.x},${block.y}`] = true;
+                            });
+                            
+                            // Create the piece object
+                            placedPiece = {
+                                id: `piece_${pieces.length + generatedPieces.length + 1}`,
+                                name: `Piece ${pieces.length + generatedPieces.length + 1}`,
+                                blocks: pieceBlocks,
+                                target_position: {
+                                    x: position.x,
+                                    y: position.y
+                                }
+                            };
+                            
+                            generatedPieces.push(placedPiece);
+                        }
+                    }
+                }
+                
+                if (!placedPiece) {
+                    console.warn(`Could not place piece ${i+1} after ${maxAttempts} attempts`);
+                }
+            }
+            
+            // Add all successfully generated pieces
+            pieces.push(...generatedPieces);
+            
+            // Render updated pieces list
+            renderPiecesList();
+            updatePieceVisualizers();
+            
+            // Select the first generated piece if any were created
+            if (generatedPieces.length > 0) {
+                selectPiece(generatedPieces[0].id);
+            }
+        });
+        
+        // Function to delete a piece
+        function deletePiece(pieceId) {
+            // Find the piece index
+            const pieceIndex = pieces.findIndex(p => p.id === pieceId);
+            if (pieceIndex === -1) return;
+            
+            // Remove the piece
+            pieces.splice(pieceIndex, 1);
+            
+            // Remove from hidden pieces
+            if (hiddenPieces[pieceId] !== undefined) {
+                delete hiddenPieces[pieceId];
+            }
+            
+            // Update selected piece if needed
+            if (selectedPiece && selectedPiece.id === pieceId) {
+                selectedPiece = null;
+            }
+            
+            // Re-render the pieces list
+            renderPiecesList();
+            
+            // Update visualizers to reflect the deleted piece
+            updatePieceVisualizers();
+            
+            markUnsavedChanges();
+        }
+        
+        // Function to render the pieces list
+        function renderPiecesList() {
+            piecesListElement.innerHTML = '';
+            
+            pieces.forEach((piece, index) => {
+                const pieceItem = document.createElement('div');
+                pieceItem.className = 'piece-item';
+                pieceItem.id = `piece-${piece.id}`;
+                
+                // Create preview of the piece shape
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'piece-preview';
+                
+                const pieceBlocks = piece.blocks || [];
+                if (pieceBlocks.length > 0) {
+                    const minX = Math.min(...pieceBlocks.map(b => b.x));
+                    const minY = Math.min(...pieceBlocks.map(b => b.y));
+                    const maxX = Math.max(...pieceBlocks.map(b => b.x));
+                    const maxY = Math.max(...pieceBlocks.map(b => b.y));
+                    const width = maxX - minX + 1;
+                    const height = maxY - minY + 1;
+                    previewDiv.style.gridTemplateColumns = `repeat(${width}, 16px)`;
+                    previewDiv.style.gridTemplateRows = `repeat(${height}, 16px)`;
+                    
+                    pieceBlocks.forEach(block => {
+                        const blockDiv = document.createElement('div');
+                        blockDiv.className = 'preview-block';
+                        blockDiv.style.backgroundColor = getPieceColor(index);
+                        blockDiv.style.gridColumnStart = (block.x - minX + 1);
+                        blockDiv.style.gridRowStart = (block.y - minY + 1);
+                        previewDiv.appendChild(blockDiv);
+                    });
+                }
+                
+                pieceItem.appendChild(previewDiv);
+                
+                // Create content wrapper for piece info
+                const contentWrapper = document.createElement('div');
+                contentWrapper.className = 'piece-content';
+                
+                // Display piece id
+                const idLabel = document.createElement('span');
+                idLabel.textContent = piece.id;
+                contentWrapper.appendChild(idLabel);
+                
+                // Add content wrapper to piece item
+                pieceItem.appendChild(contentWrapper);
+                
+                // Create actions container at the bottom
+                const actionsContainer = document.createElement('div');
+                actionsContainer.className = 'piece-actions';
+                
+                // Create visibility toggle button
+                const toggleVisBtn = document.createElement('button');
+                toggleVisBtn.className = 'piece-toggle-visibility';
+                toggleVisBtn.title = 'Toggle visibility';
+                
+                const eyeIcon = document.createElement('span');
+                eyeIcon.className = 'eye-icon';
+                if (hiddenPieces[piece.id]) {
+                    eyeIcon.classList.add('closed');
+                }
+                
+                toggleVisBtn.appendChild(eyeIcon);
+                toggleVisBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent selection of the piece
+                    togglePieceVisibility(piece.id);
+                });
+                
+                // Create delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'piece-delete';
+                deleteBtn.textContent = '×';
+                deleteBtn.title = 'Delete piece';
+                deleteBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent selection of the piece
+                    deletePiece(piece.id);
+                });
+                
+                actionsContainer.appendChild(toggleVisBtn);
+                actionsContainer.appendChild(deleteBtn);
+                pieceItem.appendChild(actionsContainer);
+                
+                if (selectedPiece && selectedPiece.id === piece.id) {
+                    pieceItem.classList.add('selected');
+                }
+                
+                pieceItem.addEventListener('click', () => {
+                    selectPiece(piece.id);
+                });
+                
+                piecesListElement.appendChild(pieceItem);
+            });
+        }
+        
+        // Function to select a piece
+        function selectPiece(pieceId) {
+            // Find the piece
+            const piece = pieces.find(p => p.id === pieceId);
+            if (!piece) return;
+            
+            // Update selected piece
+            selectedPiece = piece;
+            pieceTargetMode = 'block'; // Luôn ở mode 'block' vì không còn mode 'target' nữa
+            
+            // Switch to piece mode
+            setInteractionMode('piece');
+            
+            // Update UI
+            const pieceItems = document.querySelectorAll('.piece-item');
+            pieceItems.forEach(item => {
+                item.classList.remove('selected');
+                if (item.id === `piece-${pieceId}`) {
+                    item.classList.add('selected');
+                }
+            });
+            
+            // Update piece block indicators
+            updatePieceVisualizers();
+        }
+        
+        // Update the visual indicators for pieces on the grid
+        function updatePieceVisualizers() {
+            // Clear all piece indicators
+            document.querySelectorAll('.piece-color-indicator, .piece-target-indicator').forEach(el => el.remove());
+            
+            // Create separate maps to track targets and blocks
+            const targetPositions = {}; // Track target positions by piece ID
+            const blockPositions = {}; // Track which pieces have blocks at each position
+            
+            // First pass: collect information about which cells are occupied by which pieces
+            pieces.forEach((piece, pieceIndex) => {
+                // Skip hidden pieces
+                if (hiddenPieces[piece.id]) return;
+                
+                // Track target position
+                if (piece.target_position) {
+                    const cellKey = `${piece.target_position.x},${piece.target_position.y}`;
+                    targetPositions[cellKey] = pieceIndex;
+                }
+                
+                // Track blocks
+                if (piece.blocks && piece.blocks.length > 0) {
+                    piece.blocks.forEach(block => {
+                        const cellKey = `${block.x},${block.y}`;
+                        if (!blockPositions[cellKey]) {
+                            blockPositions[cellKey] = [];
+                        }
+                        blockPositions[cellKey].push(pieceIndex);
+                    });
+                }
+            });
+            
+            // Second pass: render piece indicators
+            pieces.forEach((piece, pieceIndex) => {
+                // Skip hidden pieces
+                if (hiddenPieces[piece.id]) return;
+                
+                const pieceColor = getPieceColor(pieceIndex);
+                const isSelected = selectedPiece && selectedPiece.id === piece.id;
+                
+                // Show target position
+                if (piece.target_position) {
+                    const targetCell = document.getElementById(`cell-${piece.target_position.x}-${piece.target_position.y}`);
+                    if (targetCell) {
+                        const targetIndicator = document.createElement('div');
+                        targetIndicator.className = 'piece-target-indicator';
+                        targetIndicator.style.backgroundColor = pieceColor;
+                        targetCell.appendChild(targetIndicator);
+                    }
+                }
+                
+                // Show blocks
+                if (piece.blocks && piece.blocks.length > 0) {
+                    piece.blocks.forEach(block => {
+                        const blockCell = document.getElementById(`cell-${block.x}-${block.y}`);
+                        if (blockCell) {
+                            const cellKey = `${block.x},${block.y}`;
+                            
+                            // Check if this block overlaps with other pieces' blocks
+                            // Only consider it an overlap if blocks from different pieces are at the same position
+                            const isOverlap = blockPositions[cellKey] && blockPositions[cellKey].length > 1;
+                            
+                            // Add block indicator
+                            const blockIndicator = document.createElement('div');
+                            blockIndicator.className = 'piece-color-indicator';
+                            
+                            if (isOverlap) {
+                                blockIndicator.classList.add('overlap');
+                            } else {
+                                blockIndicator.style.borderColor = pieceColor;
+                            }
+                            
+                            if (isSelected) {
+                                blockIndicator.classList.add('selected');
+                            }
+                            
+                            blockCell.appendChild(blockIndicator);
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Add a new function to calculate target position for a piece
+        function calculateTargetPosition(piece) {
+            if (!piece.blocks || piece.blocks.length === 0) {
+                return null;
+            }
+            
+            // Tìm block có tọa độ Y nhỏ nhất (block trên cùng)
+            const minY = Math.min(...piece.blocks.map(block => block.y));
+            
+            // Tìm block có tọa độ X nhỏ nhất (block ngoài cùng bên trái)
+            const minX = Math.min(...piece.blocks.map(block => block.x));
+            
+            // Điểm giao là góc trái trên của toàn bộ mảnh (minX, minY)
+            return { x: minX, y: minY };
+        }
+        
+        // Function to update target positions for all pieces
+        function updateAllTargetPositions() {
+            pieces.forEach(piece => {
+                piece.target_position = calculateTargetPosition(piece);
+            });
+            updatePieceVisualizers();
+        }
+        
+        // Function to handle cell interaction based on current mode
+        function handleCellInteraction(cell, isClick = false) {
+            // For mousemove events, we want to avoid processing the same cell multiple times
+            if (!isClick && cell === lastCellInteracted) return;
+            
+            const x = parseInt(cell.dataset.x);
+            const y = parseInt(cell.dataset.y);
+            
+            if (interactionMode === 'piece' && selectedPiece) {
+                // We only have block mode now, no more target mode
+                // Add or remove this cell as a block
+                const blockIndex = selectedPiece.blocks.findIndex(block => 
+                    block.x === x && block.y === y
+                );
+                
+                if (blockIndex >= 0) {
+                    // Block exists, remove it
+                    selectedPiece.blocks.splice(blockIndex, 1);
+                } else {
+                    // Add new block
+                    selectedPiece.blocks.push({ x, y });
+                }
+                
+                // Calculate new target position
+                selectedPiece.target_position = calculateTargetPosition(selectedPiece);
+                
+                // Update visuals
+                updatePieceVisualizers();
+                markUnsavedChanges();
+            } else {
+                // Draw mode - chỉ thay đổi màu, không xóa màu
+                const selectedColor = drawColorInput.value;
+                cell.style.backgroundColor = selectedColor;
+                
+                // Auto-save color when drawing
+                autoSaveColor(selectedColor);
+                markUnsavedChanges();
+            }
+            
+            // Remember this cell to avoid processing it multiple times in quick succession
+            lastCellInteracted = cell;
+        }
+        
+        // Function to generate JSON from grid
+        function generateJson() {
+            // Cập nhật target_position cho tất cả mảnh trước khi tạo JSON
+            updateAllTargetPositions();
+            
+            // Start with template or current level data
+            let jsonData = currentLevelData ? JSON.parse(JSON.stringify(currentLevelData)) : {
+                id: "new_level",
+                name: "Level Viewer",
+                description: "",
+                difficulty: 1,
+                grid: {
+                    width: gridWidth,
+                    height: gridHeight,
+                    block_size: 40
+                },
+                board: {
+                    background_color: "#F2E8DC"
+                },
+                fixed_blocks: [],
+                pieces: [],
+                preview_duration: 3.0,
+                time_limit: 60,
+                hints_available: 3,
+                next_level_id: ""
+            };
+            
+            // Get all colored cells from grid
+            const cells = document.querySelectorAll('.grid-cell');
+            const pixels = [];
+            const coloredCells = {}; // Map to track all colored cells by position
+            
+            cells.forEach(cell => {
+                const x = parseInt(cell.dataset.x);
+                const y = parseInt(cell.dataset.y);
+                const color = rgbToHex(cell.style.backgroundColor);
+                
+                // Only include cells with non-default color
+                if (color !== '#3d3d3d') {
+                    pixels.push({
+                        x: x,
+                        y: y,
+                        color: color
+                    });
+                    
+                    // Track this colored cell by its coordinates
+                    coloredCells[`${x},${y}`] = color;
+                }
+            });
+            
+            // Use extracted pixels if available, otherwise use the pixels from the grid
+            jsonData.pixels = extractedPixels.length > 0 ? extractedPixels : pixels;
+            
+            // Track cells occupied by pieces
+            const pieceOccupiedCells = {};
+            
+            // Filter out pieces without blocks and normalize the remaining ones
+            let normalizedPieces = JSON.parse(JSON.stringify(pieces))
+                .filter(piece => piece.blocks && piece.blocks.length > 0) // Filter out pieces with no blocks
+                .map(piece => {
+                    // Find the minimum x and y coordinates
+                    const minX = Math.min(...piece.blocks.map(block => block.x));
+                    const minY = Math.min(...piece.blocks.map(block => block.y));
+                    
+                    // Offset all blocks to bring them closer to (0,0)
+                    piece.blocks = piece.blocks.map(block => {
+                        // Before normalizing, mark this cell as occupied by a piece
+                        pieceOccupiedCells[`${block.x},${block.y}`] = true;
+                        
+                        // Get color for this block from the coloredCells map
+                        const color = coloredCells[`${block.x},${block.y}`] || "#FFD700"; // Default to gold if no color found
+                        
+                        return {
+                            x: block.x - minX,
+                            y: block.y - minY,
+                            color: color
+                        };
+                    });
+                    
+                    return piece;
+                });
+            
+            // Update the pieces in the JSON
+            jsonData.pieces = normalizedPieces;
+            
+            // Calculate fixed blocks: cells that have color but are not part of any piece
+            const fixedBlocks = [];
+            
+            Object.keys(coloredCells).forEach(coords => {
+                if (!pieceOccupiedCells[coords]) {
+                    const [x, y] = coords.split(',').map(Number);
+                    fixedBlocks.push({
+                        x: x,
+                        y: y,
+                        color: coloredCells[coords]
+                    });
+                }
+            });
+            
+            // Update the fixed_blocks array in the JSON
+            jsonData.fixed_blocks = fixedBlocks;
+            
+            // Display the JSON
+            jsonOutput.value = JSON.stringify(jsonData, null, 2);
+        }
+        
+        // Helper function to convert RGB to HEX
+        function rgbToHex(rgb) {
+            if (!rgb || rgb === 'transparent' || rgb === '') return '#3d3d3d'; // Default color
+            
+            // Check if already hex
+            if (rgb.startsWith('#')) return rgb;
+            
+            // Extract RGB values
+            const rgbMatch = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+            if (!rgbMatch) return '#3d3d3d';
+            
+            const r = parseInt(rgbMatch[1], 10).toString(16).padStart(2, '0');
+            const g = parseInt(rgbMatch[2], 10).toString(16).padStart(2, '0');
+            const b = parseInt(rgbMatch[3], 10).toString(16).padStart(2, '0');
+            
+            return `#${r}${g}${b}`;
+        }
+        
+        // Make grid cells clickable to change color or select for pieces
+        function makeGridInteractive() {
+            let isMouseDownOnGrid = false; // Track mouse state specific to the grid
+            let mouseDownStartTime = 0; // Time when mouse was pressed down
+            let dragActivated = false; // Whether drag mode is activated
+            let dragStartCell = null; // Cell where drag started
+            const DRAG_THRESHOLD_MS = 200; // Time in ms to hold before drag activates
+            
+            // Xóa event listeners cũ để tránh trùng lặp
+            gridContainer.removeEventListener('click', handleGridClick);
+            
+            // Thêm xử lý click trực tiếp
+            gridContainer.addEventListener('click', handleGridClick);
+            
+            // Set up mousedown, mousemove handlers on grid container
+            gridContainer.addEventListener('mousedown', (e) => {
+                isMouseDown = true;
+                isMouseDownOnGrid = true;
+                dragActivated = false;
+                mouseDownStartTime = Date.now();
+                
+                // Store the cell where mousedown started
+                if (e.target.classList.contains('grid-cell')) {
+                    dragStartCell = e.target;
+                }
+            });
+            
+            gridContainer.addEventListener('mousemove', (e) => {
+                if (!isMouseDown || !isMouseDownOnGrid) return;
+                
+                // Check if enough time has passed to activate drag mode
+                const mouseHoldTime = Date.now() - mouseDownStartTime;
+                
+                if (mouseHoldTime >= DRAG_THRESHOLD_MS) {
+                    dragActivated = true;
+                    
+                    // Process the current cell under the mouse
+                    if (e.target.classList.contains('grid-cell')) {
+                        handleCellInteraction(e.target, false);
+                    }
+                }
+            });
+            
+            gridContainer.addEventListener('mouseup', (e) => {
+                isMouseDownOnGrid = false;
+                dragActivated = false;
+                dragStartCell = null;
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isMouseDown = false;
+                lastCellInteracted = null;
+            });
+        }
+        
+        // Tách xử lý click ra thành hàm riêng để có thể thêm/xóa event listener
+        function handleGridClick(e) {
+            if (e.target.classList.contains('grid-cell')) {
+                // Xử lý click trên cell
+                handleCellInteraction(e.target, true);
+            }
+        }
+            
+        function displayLevel(levelData) {
+            // Update level info
+            document.getElementById('level-name').textContent = levelData.name || 'Level Viewer';
+            
+            // Get grid dimensions
+            gridWidth = levelData.grid.width;
+            gridHeight = levelData.grid.height;
+            const blockSize = levelData.grid.block_size;
+            
+            // Set up grid
+            gridContainer.innerHTML = ''; // Clear previous grid
+            gridContainer.style.gridTemplateColumns = `repeat(${gridWidth}, ${blockSize}px)`;
+            gridContainer.style.gridTemplateRows = `repeat(${gridHeight}, ${blockSize}px)`;
+            
+            // Create empty grid cells
+            for (let y = 0; y < gridHeight; y++) {
+                for (let x = 0; x < gridWidth; x++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+                    if (!showGridColors) {
+                        cell.classList.add('hide-colors');
+                    }
+                    cell.id = `cell-${x}-${y}`;
+                    cell.dataset.x = x;
+                    cell.dataset.y = y;
+                    cell.style.backgroundColor = '#3d3d3d'; // Mặc định màu đen nhạt cho tất cả cells
+                    gridContainer.appendChild(cell);
+                }
+            }
+            
+            // Fill in pixels with colors
+            if (levelData.pixels && levelData.pixels.length > 0) {
+                levelData.pixels.forEach(pixel => {
+                    const cell = document.getElementById(`cell-${pixel.x}-${pixel.y}`);
+                    if (cell) {
+                        cell.style.backgroundColor = pixel.color;
+                    }
+                });
+            }
+            
+            // Make grid interactive
+            makeGridInteractive();
+            
+            // Show all pieces
+            updatePieceVisualizers();
+            
+            // Display pieces if provided in levelData
+            if (levelData.pieces && Array.isArray(levelData.pieces)) {
+                pieces = levelData.pieces; // Update the global pieces array
+                renderPiecesList(); // Re-render the pieces list to show current pieces
+                updatePieceVisualizers(); // Update visualizers for current pieces
+            }
+        }
+        
+        // Initialize the display
+        displayLevel({
+            name: "Level Viewer",
+            description: "",
+            grid: {
+                width: gridWidth,
+                height: gridHeight,
+                block_size: 40
+            },
+            pieces: pieces, // Pass current pieces to displayLevel
+            pixels: []
+        });
+        
+        // Initialize the pieces list
+        renderPiecesList();
+        
+        // Sync initial colors
+        drawColorInput.value = fillColorInput.value;
+        
+        // Array to store saved colors
+        let savedColors = [];
+        
+        // Load saved colors from localStorage
+        function loadSavedColors() {
+            const savedColorsStr = localStorage.getItem('savedGridColors');
+            if (savedColorsStr) {
+                try {
+                    savedColors = JSON.parse(savedColorsStr);
+                    renderSavedColors();
+                } catch (e) {
+                    console.error("Error loading saved colors:", e);
+                    savedColors = [];
+                }
+            }
+        }
+        
+        // Save colors to localStorage
+        function saveSavedColors() {
+            localStorage.setItem('savedGridColors', JSON.stringify(savedColors));
+        }
+        
+        // Function to render saved colors
+        function renderSavedColors() {
+            savedColorsContainer.innerHTML = '';
+            
+            // Add all saved colors as clickable dots
+            savedColors.forEach((color, index) => {
+                const colorElement = document.createElement('div');
+                colorElement.className = 'saved-color';
+                colorElement.style.backgroundColor = color;
+                colorElement.title = color;
+                
+                // Click to select color
+                colorElement.addEventListener('click', () => {
+                    // Update color inputs
+                    fillColorInput.value = color;
+                    drawColorInput.value = color;
+                    fillColorHexInput.value = color;
+                    drawColorHexInput.value = color;
+                    
+                    // Mark this color as active
+                    document.querySelectorAll('.saved-color').forEach(el => el.classList.remove('active'));
+                    colorElement.classList.add('active');
+                });
+                
+                // Right click to remove color
+                colorElement.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    if (confirm(`Xóa màu ${color}?`)) {
+                        savedColors.splice(index, 1);
+                        saveSavedColors();
+                        renderSavedColors();
+                    }
+                });
+                
+                savedColorsContainer.appendChild(colorElement);
+            });
+        }
+        
+        // Function to automatically save color with limit of 10 colors
+        function autoSaveColor(color) {
+            // Skip default background color
+            if (color === '#3d3d3d') return;
+            
+            // Don't save duplicates
+            if (!savedColors.includes(color)) {
+                // If already have 10 colors, remove the oldest one
+                if (savedColors.length >= 10) {
+                    savedColors.shift(); // Remove the first (oldest) color
+                }
+                
+                // Add the new color
+                savedColors.push(color);
+                saveSavedColors();
+                renderSavedColors();
+            } else {
+                // Move the color to the end (most recent)
+                const colorIndex = savedColors.indexOf(color);
+                if (colorIndex >= 0) {
+                    savedColors.splice(colorIndex, 1); // Remove from current position
+                    savedColors.push(color); // Add to the end
+                    saveSavedColors();
+                    renderSavedColors();
+                }
+                
+                // Highlight the color
+                const existingColorElement = [...savedColorsContainer.children].find(
+                    el => el.style.backgroundColor === color || 
+                         rgbToHex(el.style.backgroundColor) === color
+                );
+                
+                if (existingColorElement) {
+                    const originalTransform = existingColorElement.style.transform;
+                    existingColorElement.style.transform = 'scale(1.3)';
+                    existingColorElement.style.boxShadow = '0 0 5px white';
+                    
+                    setTimeout(() => {
+                        existingColorElement.style.transform = originalTransform;
+                        existingColorElement.style.boxShadow = '';
+                    }, 500);
+                }
+            }
+        }
+        
+        // Initialize saved colors
+        loadSavedColors();
+
+        // Function to extract colors from an uploaded image
+        extractColorsBtn.addEventListener('click', () => {
+            const file = imageInput.files[0];
+            if (!file) {
+                alert('Please select an image file first');
+                return;
+            }
+
+            const imgWidth = parseInt(imageGridWidth.value) || 8;
+            const imgHeight = parseInt(imageGridHeight.value) || 8;
+            
+            // Set grid dimensions to match the image grid
+            gridWidthInput.value = imgWidth;
+            gridHeightInput.value = imgHeight;
+            
+            // Update grid dimensions
+            gridWidth = imgWidth;
+            gridHeight = imgHeight;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    // Set canvas size to match the image
+                    imageCanvas.width = img.width;
+                    imageCanvas.height = img.height;
+                    
+                    const ctx = imageCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Calculate cell dimensions
+                    const cellWidth = img.width / imgWidth;
+                    const cellHeight = img.height / imgHeight;
+                    
+                    // Extract colors from the center of each cell
+                    extractedPixels = [];
+                    const previewHTML = [];
+                    
+                    // Set up preview grid
+                    previewHTML.push(`<div style="display: grid; grid-template-columns: repeat(${imgWidth}, 1fr); grid-gap: 1px;">`);
+                    
+                    for (let y = 0; y < imgHeight; y++) {
+                        for (let x = 0; x < imgWidth; x++) {
+                            // Get color from center of cell
+                            const centerX = Math.floor((x + 0.5) * cellWidth);
+                            const centerY = Math.floor((y + 0.5) * cellHeight);
+                            
+                            const pixelData = ctx.getImageData(centerX, centerY, 1, 1).data;
+                            const color = rgbToHex(`rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`);
+                            
+                            // Only add non-transparent pixels (alpha > 0)
+                            if (pixelData[3] > 0) {
+                                extractedPixels.push({
+                                    x: x,
+                                    y: y,
+                                    color: color
+                                });
+                                
+                                // Add to preview
+                                previewHTML.push(`<div style="background-color: ${color}; aspect-ratio: 1;"></div>`);
+                            } else {
+                                // Empty cell for transparent pixels
+                                previewHTML.push(`<div style="background-color: transparent; aspect-ratio: 1; border: 1px dashed #666;"></div>`);
+                            }
+                        }
+                    }
+                    
+                    previewHTML.push('</div>');
+                    
+                    // Show preview
+                    colorPreviewGrid.innerHTML = previewHTML.join('');
+                    colorPreviewGrid.style.display = 'block';
+                    
+                    // Apply the grid with the new dimensions
+                    applyGridBtn.click();
+                    
+                    // Apply the extracted colors to the grid
+                    applyExtractedColors();
+                    
+                    // Generate JSON with the extracted pixels
+                    generateJson();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // Function to apply extracted colors to the grid
+        function applyExtractedColors() {
+            // Clear existing grid colors first
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach(cell => {
+                cell.style.backgroundColor = '#3d3d3d';  // Reset to default
+            });
+            
+            // Apply extracted colors
+            extractedPixels.forEach(pixel => {
+                const cell = document.getElementById(`cell-${pixel.x}-${pixel.y}`);
+                if (cell) {
+                    cell.style.backgroundColor = pixel.color;
+                }
+            });
+        }
+
+        // Add event listener for toggling all pieces
+        toggleAllPiecesBtn.addEventListener('click', () => {
+            // Toggle the global visibility state
+            allPiecesVisible = !allPiecesVisible;
+            
+            // Update the eye icon
+            const eyeIcon = toggleAllPiecesBtn.querySelector('.eye-icon');
+            if (allPiecesVisible) {
+                eyeIcon.classList.remove('closed');
+            } else {
+                eyeIcon.classList.add('closed');
+            }
+            
+            // Apply to all pieces
+            pieces.forEach(piece => {
+                hiddenPieces[piece.id] = !allPiecesVisible;
+                
+                // Update individual piece eye icons
+                const pieceItem = document.getElementById(`piece-${piece.id}`);
+                if (pieceItem) {
+                    const pieceEyeIcon = pieceItem.querySelector('.eye-icon');
+                    if (pieceEyeIcon) {
+                        if (hiddenPieces[piece.id]) {
+                            pieceEyeIcon.classList.add('closed');
+                        } else {
+                            pieceEyeIcon.classList.remove('closed');
+                        }
+                    }
+                }
+            });
+            
+            // Update the visualization
+            updatePieceVisualizers();
+            
+            markUnsavedChanges();
+        });
+    </script>
+</body>
+</html> 
